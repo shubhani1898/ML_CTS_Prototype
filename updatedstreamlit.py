@@ -74,7 +74,7 @@ if st.button('Predict'):
 
 Data = []
 
-with open ('okay1.txt') as f:
+with open ('Part_Accepted.txt') as f:
     reader_obj = csv.reader(f) 
       
     # Iterate over each row in the csv  
@@ -125,7 +125,7 @@ data = pd.DataFrame(D, columns=columns)
 
 Data1 = []
 
-with open ('major .txt') as f:
+with open ('Part_Rejected.txt') as f:
     reader_obj = csv.reader(f) 
       
     # Iterate over each row in the csv  
@@ -166,6 +166,60 @@ datamajor = pd.DataFrame(D1, columns=columns)
 
 ###                 Minor                   #########
 
+Data2 = []
+
+with open ('stab.txt') as f:
+    reader_obj = csv.reader(f) 
+      
+    # Iterate over each row in the csv  
+    # file using reader object 
+    for row in reader_obj:
+
+    # Load data into DataFrame
+        Data2.append(row)
+
+csd2 = []
+for l in Data2:
+    if len(l) == 6:
+        # csd.append([l[2],l[3],l[5]])
+        if l[2] == "PRF" or l[2] == "FGN" or l[2] == "SDP" or l[2] == "DPD":
+            csd2.append([l[2],float(l[3].split()[1]),float(l[5].split()[1])])
+
+empty = []
+
+i = 0
+for d in csd2:
+    if d == ['PRF', 0.0, 0.0]:
+        empty.append(i)
+    i += 1
+f = empty[0]
+sec = empty[1]
+
+csd2 = csd2[f:sec]
+
+# print(csd)
+D2 = []
+den = []
+for d in csd:
+    D2.append([d[1],d[2]])
+
+columns = ['Elapse_Time', 'Pressure1']
+dataminor = pd.DataFrame(D2, columns=columns)
+
+
+
+
+
+
+df1 = datamajor.rename(columns={'Pressure': 'Pressure for Rejected'})
+df2 = dataminor.rename(columns={'Pressure1': 'Stab'})
+
+# Merge DataFrames on 'x' column
+df_combined = pd.merge(df1, df2, on='Elapse_Time')
+
+# Set 'x' column as the index
+df_combined = df_combined.set_index('Elapse_Time')
+
 
 # Create columns
 col1, col2 = st.columns(2)
@@ -176,4 +230,4 @@ with col1:
 with col2:
     st.line_chart(data=datamajor, x='Elapse_Time', y='Pressure', color='#FF0000', width=0, height=0, use_container_width=True)
 
-st.line_chart(data=datamajor, x='Elapse_Time', y='Pressure', color='#0000FF', width=0, height=0, use_container_width=True)
+st.line_chart(data=df_combined, color=['#FF0000','#001fff'] ,width=0, height=0, use_container_width=True)
