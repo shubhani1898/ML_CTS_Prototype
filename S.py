@@ -82,19 +82,7 @@ with c1:
         else:
             st.error('Rejected')
 
-Data = []
 
-with open ('Part_Accepted.txt') as f:
-    reader_obj = csv.reader(f) 
-      
-    # Iterate over each row in the csv  
-    # file using reader object 
-    for row in reader_obj:
-
-    # Load data into DataFrame
-        Data.append(row)
-
-print(Data[0])
 
 # with c2:
 #     tab1, tab2 = st.tabs(["Chart", "Table"])
