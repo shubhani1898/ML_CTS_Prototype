@@ -170,8 +170,9 @@ df_combined = df_combined.set_index('Elapse_Time')
 # Sample Data
 time = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
 pressure_cal_cycle_1 = [0, 2, 3.8, 4.7, 4.9, 4.98, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0]  # No leak
-pressure_cal_cycle_2 = [0, 2, 3.8, 4.7, 4.9, 4.98, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4.9, 4.8, 4.7, 4.6, 4.5, 4.4, 4.3, 4.2, 4.1, 0]  # Corrected leak
-pressure_cal_cycle_3 = [0, 2, 3.8, 4.7, 4.9, 4.98, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4.9, 4.8, 4.7, 4.7, 4.5, 4.3, 4.3, 0]  # No leak
+defect1 = [0, 2, 3.8, 4.7, 4.9, 4.98, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4.9, 4.8, 4.8, 0]  #  leak
+defect2 = [0, 2, 3.8, 4.7, 4.9, 4.98, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4.9, 4.8, 4.7, 4.6, 4.5, 4.4, 4.3, 4.2, 4.1, 0]  # Corrected leak
+defect3 = [0, 2, 3.8, 4.7, 4.9, 4.98, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4.9, 4.8, 4.7, 4.7, 4.5, 4.3, 4.3, 0]  # No leak
 
 # Time =  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
 # Pressure_Cycle1 = [0, 2, 3.8, 4.7, 4.9, 4.98, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0]
@@ -187,13 +188,13 @@ randomdata = {
 randomdata1 = {
     'Time': time,
     'Pressure Cycle 1': pressure_cal_cycle_1,
-    'Pressure Cycle 2': pressure_cal_cycle_2
+    'decect': defect2
 }
 randomdata2 = {
     'Time': time,
-    'Pressure Cycle 1': pressure_cal_cycle_1,
-    'Pressure Cycle 2': pressure_cal_cycle_2,
-    'Pressure Cycle 3': pressure_cal_cycle_3
+    'defect1': defect1,
+    'defect2': defect2,
+    'defect3': defect3
 }
 
 df = pd.DataFrame(randomdata)
@@ -222,8 +223,15 @@ with col1:
     st.dataframe(df1)
 
 with col2:
+    st.header('Pressure Calibration Cycles')
+
+    # Plot the data using st.line_chart
+    st.line_chart(df2.set_index('Time'), color=['#FF0000','#001fff','#00FF00'])
+    # st.line_chart(Newdf.set_index('Time'))
+
     c1,c2 = st.columns([1,1])
     with c1:
+            st.header('No Pressure detect')
             st.line_chart(df.set_index('Time'))
             # st.line_chart(df1.set_index('Time'), color=['#FF0000','#001fff'])
     # st.line_chart(data=datamajor, x='Elapse_Time', y='Pressure', color='#11FF11', width=0, height=0, use_container_width=True)
@@ -231,11 +239,8 @@ with col2:
     #     st.title('Pressure for multiple cycle')
     #     st.line_chart(data=df_combined, color=['#FF0000','#001fff'] ,width=0, height=0, use_container_width=True)
     # # Streamlit application
+        st.header('Leak vs Okay')
         st.line_chart(df1.set_index('Time'), color=['#FF0000','#001fff'])
         
     
-    st.title('Pressure Calibration Cycles')
-
-    # Plot the data using st.line_chart
-    st.line_chart(df2.set_index('Time'), color=['#FF0000','#001fff','#00FF00'])
-    # st.line_chart(Newdf.set_index('Time'))
+    
