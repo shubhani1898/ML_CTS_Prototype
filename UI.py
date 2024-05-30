@@ -171,15 +171,45 @@ df_combined = df_combined.set_index('Elapse_Time')
 time = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
 pressure_cal_cycle_1 = [0, 2, 3.8, 4.7, 4.9, 4.98, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0]  # No leak
 pressure_cal_cycle_2 = [0, 2, 3.8, 4.7, 4.9, 4.98, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4.9, 4.8, 4.7, 4.6, 4.5, 4.4, 4.3, 4.2, 4.1, 0]  # Corrected leak
+pressure_cal_cycle_3 = [0, 2, 3.8, 4.7, 4.9, 4.98, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4.9, 4.8, 4.7, 4.7, 4.5, 4.3, 4.3, 0]  # No leak
 
+# Time =  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+# Pressure_Cycle1 = [0, 2, 3.8, 4.7, 4.9, 4.98, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0]
+# Pressure_Cycle4 = [4.9689, 5.0645, 5.0643, 4.9035, 4.9322, 4.9904, 5.0599, 5.0421, 5.0671, 5.0640, 5.0373, 5.0427, 4.9124, 4.9513, 5.0331, 5.0483, 4.9617, 4.9948, 4.9753, 5.0358, 4.9622, 4.9052, 4.9030, 4.9660, 4.9769, 4.9163]
+# Pressure_Cycle5 = [0.0000, 2.0000, 2.1249, 2.2746, 2.4706, 2.6511, 2.7689, 2.8800, 3.0790, 3.2439, 3.3606, 3.4936, 3.6891, 3.8182, 3.9283, 3.7471, 3.6083, 3.4586, 3.2761, 3.1565, 3.0314, 2.9147, 2.7688, 2.6670, 2.5269, 2.4057]
+# Pressure_Cycle6 = [0.0000, 2.1581, 2.3055, 2.4125, 2.5312, 2.6616, 2.7967, 3.1264, 4.2583, 5.7033, 6.8056, 8.1205, 9.3093, 9.1382, 8.9770, 8.7802, 8.6228, 8.4806, 8.3231, 8.1381, 8.0186, 7.8488, 7.7383, 7.5926,0.0000]
 # Create a DataFrame
 randomdata = {
     'Time': time,
     'Pressure Cycle 1': pressure_cal_cycle_1,
+    
+}
+randomdata1 = {
+    'Time': time,
+    'Pressure Cycle 1': pressure_cal_cycle_1,
     'Pressure Cycle 2': pressure_cal_cycle_2
+}
+randomdata2 = {
+    'Time': time,
+    'Pressure Cycle 1': pressure_cal_cycle_1,
+    'Pressure Cycle 2': pressure_cal_cycle_2,
+    'Pressure Cycle 3': pressure_cal_cycle_3
 }
 
 df = pd.DataFrame(randomdata)
+df1 = pd.DataFrame(randomdata1)
+df2 = pd.DataFrame(randomdata2)
+
+
+# NewSample = {
+#     'Time': Time,
+#     'Pressure_Cycle1': Pressure_Cycle1,
+#     'Pressure_Cycle4': Pressure_Cycle4,
+#     'Pressure_Cycle5': Pressure_Cycle5,
+#     'Pressure_Cycle6':Pressure_Cycle6
+
+# }
+# Newdf = pd.DataFrame(NewSample)
 
 
 
@@ -188,20 +218,24 @@ with col1:
     st.header("""
             Dataset
           """)
-    st.dataframe(data)
+    st.dataframe(df)
+    st.dataframe(df1)
 
 with col2:
     c1,c2 = st.columns([1,1])
     with c1:
-        st.title('Pressure for no defect')
-        st.line_chart(data=data, x='Elapse_Time', y='Pressure', color='#00FF00', width=0, height=0, use_container_width=True)
+            st.line_chart(df.set_index('Time'))
+            # st.line_chart(df1.set_index('Time'), color=['#FF0000','#001fff'])
     # st.line_chart(data=datamajor, x='Elapse_Time', y='Pressure', color='#11FF11', width=0, height=0, use_container_width=True)
     with c2:
-        st.title('Pressure for multiple cycle')
-        st.line_chart(data=df_combined, color=['#FF0000','#001fff'] ,width=0, height=0, use_container_width=True)
-    # Streamlit application
+    #     st.title('Pressure for multiple cycle')
+    #     st.line_chart(data=df_combined, color=['#FF0000','#001fff'] ,width=0, height=0, use_container_width=True)
+    # # Streamlit application
+        st.line_chart(df1.set_index('Time'), color=['#FF0000','#001fff'])
+        
+    
     st.title('Pressure Calibration Cycles')
 
     # Plot the data using st.line_chart
-    st.line_chart(df.set_index('Time'), color=['#FF0000','#001fff'])
-    
+    st.line_chart(df2.set_index('Time'), color=['#FF0000','#001fff','#00FF00'])
+    # st.line_chart(Newdf.set_index('Time'))
